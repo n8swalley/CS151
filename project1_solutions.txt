@@ -1,0 +1,139 @@
+N8 Swalley and Ben Taczy Section 2
+
+***********************************************
+Part 1
+***********************************************
+?- coladd(B,B,A), coladd(A,A,P), coladd(P,P,I).
+B = A, A = P, P = I, I = 0 ;
+B = 1,
+A = 2,
+P = 4,
+I = 8 ;
+
+
+***********************************************
+Part 2
+***********************************************
+?- threedigitnocarry(P,A,B,P,A,B,I,P,A).
+P = A, A = B, B = I, I = 0 ;
+P = 4,
+A = 2,
+B = 1,
+I = 8 ;
+
+***********************************************
+Part 3
+***********************************************
+?- threedigitnocarry(0,B,C,0,E,F,0,H,J), all_distinct([B, C, E, F, H, J]).
+
+To test the 4 digit rule with only a 3 digit example, you'd do this:
+?- fourdigitnocarry(0,B,C,D, 0,F,G,H, 0,X,Y,Z), all_distinct([B,C,D, F,G,H, X,Y,Z]).
+	
+***********************************************
+Part 4
+***********************************************
+?- aggregate_all(count, prob1(B,C,E,F,H,J), Count).
+Count = 200.
+
+?- aggregate_all(count, prob1(A,B,C), Count).                                    
+Count = 32.
+
+This problem can be treated very similarly to the problems where we distribute r objects (with repition) into n distinct objects or buckets. 
+Except we don't want repition! But it's all gucci, we will happily account for that later.
+Basically, what you have is Xt + Xo <= 9. This changes that Xt + Xo + D = 9 cuz its your dump bucket. 
+Since the Xt and Xo must be greater than 0, you must subtract 2 from 9 and you get Xt + Xo + D = 7
+This makes our equation: nCr(9,7) (or 3 + 7 - 1 choose 7 from our n + r - 1 choose r formula)
+However, nCr(9,7) = 36. We are sad because we counted the situations that repeat the same numbers!
+So, we can count these situations and subtract them out! 
+There is 1 case where the numbers are all the same (or nCr(3,3)) and 3 cases where only two of the numbers are the same (or nCr(3,2)).
+In the end, we get nCr(9,7) - nCr(3,3) - nCr(3,2) and we're so happy because this is 36 - 1 - 3 = 32 
+
+Here's the four digit one:
+?- aggregate_all(count, prob2(B,C,D,F,G,H,X,Y,Z), Count).
+Count = 0.
+(It's zero cuz we ain't got enough digits to make em all distinct)
+
+***********************************************
+Part 5
+***********************************************
+?- fourdigitcarry(0,E,G,G,0,E,G,G,0,P,A,G,E), all_distinct([E,G,P,A]).
+E = 8,
+G = 9,
+P = 1,
+A = 7;
+
+?- fivedigitcarry(0,E,A,R,S,0,E,A,R,S,0,S,W,E,A,R), all_distinct([E,A,R,S,W]).
+E = 8,
+A = 4,
+R = 2,
+S = 1,
+W = 6 ;
+
+?- fourdigitcarry(0,E,L,F,0,E,L,F,0,F,A,I,L), all_distinct([E,L,F,A,I]).
+E = 5,
+L = 2,
+F = 1,
+A = 0,
+I = 4 ;
+E = 8,
+L = 2,
+F = 1,
+A = 6,
+I = 4 ;
+E = 9,
+L = 2,
+F = 1,
+A = 8,
+I = 4 ;
+false.
+
+?- aggregate_all(count, prob4(A,B,C,D, E,F,G,H, 0,G,H,J,K), Count).
+Count = 172.
+
+?- aggregate_all(count, prob3(A,B,C,D, E,F,G,H, 0,J,K,L,M), Count).
+Count = 0.
+(This is 0 cuz we ain't got enough digits to make em all distinct)
+
+?- fivedigitcarry(0,M,O,T,H,0,T,E,A,R,0,H,M,M,M,M), all_distinct([M,O,T,H,E,A,R]).
+M = 3,
+O = 5,
+T = 9,
+H = 1,
+E = 7,
+A = 4,
+R = 2 ;
+M = 3,
+O = 7,
+T = 9,
+H = 1,
+E = 5,
+A = 4,
+R = 2 ;
+M = 4,
+O = 6,
+T = 9,
+H = 1,
+E = 7,
+A = 5,
+R = 3 ;
+M = 4,
+O = 7,
+T = 9,
+H = 1,
+E = 6,
+A = 5,
+R = 3 ;
+
+?- fivedigitcarry(S,T,A,Y,S,0,0,S,A,Y,0,T,R,U,S,T), all_distinct([S,T,A,Y,R,U]).
+S = 8,
+T = 9,
+A = 7,
+Y = 1,
+R = 0,
+U = 5 ;
+false.
+
+
+
+
+
